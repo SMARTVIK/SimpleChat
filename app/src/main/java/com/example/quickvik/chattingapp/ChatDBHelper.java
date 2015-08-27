@@ -41,6 +41,7 @@ public class ChatDBHelper {
         return instance;
     }
 
+    //building query
     private static String buildCreateQuery() {
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE IF NOT EXISTS ").append(TABLE_NAME).append("(");
@@ -52,12 +53,16 @@ public class ChatDBHelper {
     }
 
     public void load() {
-        Cursor cursor = database.query(TABLE_NAME, null, null, null, null, null, null);
+        //getting results in order of timstamp
+
+        Cursor cursor = database.query(TABLE_NAME, null, null, null, null, null, "timestamp");
 
         Log.e("load", "loading started");
         if (!cursor.moveToFirst()) {
             return;//if cursor has no results then return
         }
+
+
 
         ArrayList<Messages> messagesArrayList = new ArrayList<>();
         do {
@@ -65,9 +70,12 @@ public class ChatDBHelper {
             messagesArrayList.add(messages);
         } while (cursor.moveToNext());
 
+        // setting the results to data controller
+
         DataController.getInstance().setMessages(messagesArrayList);
     }
 
+//inserting records to db
 
     public boolean insert(Messages messages) {
         StringBuilder sb = new StringBuilder();

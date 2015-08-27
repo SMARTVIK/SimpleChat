@@ -51,16 +51,13 @@ public class ChatActivity extends Activity implements Listener {
         buttonSend = (Button) findViewById(R.id.buttonSend);
         listView = (ListView) findViewById(R.id.listView1);
 
+       /*loading data from database*/
 
-/*loading data from database*/
-
-
-        DataController.getInstance().loadData();
         if (DataController.getInstance().getMessages() != null) {
             messages = DataController.getInstance().getMessages();
             settingAdapter();
         }
-     /*   if database is empty then hit the webservice*/
+     /* if database is empty then hit the webservice*/
         else {
             pDialog = new ProgressDialog(this);
             pDialog.show();
@@ -73,15 +70,39 @@ public class ChatActivity extends Activity implements Listener {
     @Override
     protected void onResume() {
         super.onResume();
-        //ChatApplication.getInstance().addUIListener(Listener.class, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //ChatApplication.getInstance().removeUIListener(Listener.class, this);
     }
 
+
+    @Override
+    public boolean onSuccess(JSONArray jsonArray) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ChatActivity.this.pDialog.dismiss();
+                settingAdapter();
+            }
+        });
+
+        return false;
+    }
+
+    @Override
+    public boolean onError(String meg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ChatActivity.this.pDialog.dismiss();
+                Toast.makeText(ChatActivity.this, "something is wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return false;
+    }
     private boolean sendChatMessage() {
         String role = side ? "sender" : "receiver";
         chatArrayAdapter.add(new Messages(chatText.getText().toString(), role, Long.toString(System.currentTimeMillis())));
@@ -123,33 +144,6 @@ public class ChatActivity extends Activity implements Listener {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
-    }
-
-    @Override
-    public boolean onSuccess(JSONArray jsonArray) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ChatActivity.this.pDialog.dismiss();
-                Toast.makeText(ChatActivity.this, "everything is fine", Toast.LENGTH_SHORT).show();
-                settingAdapter();
-            }
-        });
-
-        return false;
-    }
-
-    @Override
-    public boolean onError(String meg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ChatActivity.this.pDialog.dismiss();
-                Toast.makeText(ChatActivity.this, "something is wrong", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return false;
     }
 
 
