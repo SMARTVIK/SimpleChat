@@ -62,8 +62,6 @@ public class ChatDBHelper {
             return;//if cursor has no results then return
         }
 
-
-
         ArrayList<Messages> messagesArrayList = new ArrayList<>();
         do {
             Messages messages = new Messages(cursor.getString(cursor.getColumnIndex(COL_MESSAGE)), cursor.getString(cursor.getColumnIndex(COL_ROLE)), cursor.getString(cursor.getColumnIndex(COL_TIMESTAMP)));

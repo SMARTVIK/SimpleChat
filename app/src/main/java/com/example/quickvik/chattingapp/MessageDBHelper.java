@@ -25,7 +25,7 @@ public class MessageDBHelper extends SQLiteOpenHelper {
     private SQLiteDatabase mDatabase;
 
 
-    @SuppressLint("SdCardPath")
+
     public MessageDBHelper(Context context, String name) {
         super(context, name, null, DATABASE_VERSION);
         this.context = context;

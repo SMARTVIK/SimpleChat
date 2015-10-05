@@ -105,7 +105,9 @@ public class ChatActivity extends Activity implements Listener {
     }
     private boolean sendChatMessage() {
         String role = side ? "sender" : "receiver";
-        chatArrayAdapter.add(new Messages(chatText.getText().toString(), role, Long.toString(System.currentTimeMillis())));
+        Messages messages = new Messages(chatText.getText().toString(), role, Long.toString(System.currentTimeMillis()));
+        chatArrayAdapter.add(messages);
+        DataController.getInstance().insertMessage(messages);
         chatText.setText("");
         side = !side;
         return true;

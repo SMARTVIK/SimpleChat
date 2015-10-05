@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,8 @@ public class ChatAdapter extends BaseAdapter {
             holder.chatText.setBackgroundResource(R.drawable.bubble_b);
             holder.singleMessageContainer.setGravity(Gravity.LEFT);
         }
+
+        Toast.makeText(context,chatMessageObj.getTimestamp(),Toast.LENGTH_SHORT).show();
 
         return row;
     }
